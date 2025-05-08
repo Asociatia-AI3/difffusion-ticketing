@@ -1,98 +1,128 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🎟️ difffusion-ticketing
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+**A NestJS application for managing festival tickets and partner discounts.**
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📖 Overview
 
-## Description
+The `difffusion-ticketing` app facilitates the distribution and validation of digital tickets for the `difffusion` festival. Attendees can obtain multiple free tickets, each granting a limited number of discounts at participating partners. Partner employees can authenticate using BasicAuth to scan and validate ticket QR codes, ensuring a seamless and secure discount redemption process.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Features
 
-## Project setup
+- **User Ticketing**: Attendees can generate multiple free tickets without authentication.
+- **Discount Management**: Each ticket allows up to `maxUses` discounts at partner venues.
+- **Partner Access**: Partners authenticate via BasicAuth to validate tickets.
+- **QR Code Scanning**: Efficient ticket validation through QR code scanning.
+- **Responsive Design**: Optimized for various devices to ensure usability on-the-go.
 
-```bash
-$ npm install
-```
+## 🛠️ Getting Started
 
-## Compile and run the project
+### Prerequisites
 
-```bash
-# development
-$ npm run start
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [npm](https://www.npmjs.com/)
+- [Git](https://git-scm.com/)
 
-# watch mode
-$ npm run start:dev
+### Installation
 
-# production mode
-$ npm run start:prod
-```
+1. **Clone the Repository**
 
-## Run tests
+   ```bash
+   git clone https://github.com/Asociatia-AI3/difffusion-ticketing.git
+   cd difffusion-ticketing
+   ```
 
-```bash
-# unit tests
-$ npm run test
+2. **Install Dependencies**
 
-# e2e tests
-$ npm run test:e2e
+   ```bash
+   npm install
+   ```
 
-# test coverage
-$ npm run test:cov
-```
+3. **Set Up Environment Variables**
 
-## Deployment
+   Create a `.env` file in the root directory and configure the following variables:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+   ```env
+   NODE_ENV=development
+   PORT=3000
+   ```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+4. **Run the Application**
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+   ```bash
+   npm run start:dev
+   ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+   The application will be accessible at `http://localhost:3000`.
 
-## Resources
+## 🧾 Database Schema
 
-Check out a few resources that may come in handy when working with NestJS:
+The application uses SQLite as its database. Below is the schema resulting from the initial migration:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Users Table
 
-## Support
+| Column | Type    | Constraints           |
+|--------|---------|-----------------------|
+| id     | TEXT    | Primary Key           |
+| email  | TEXT    | Not Null, Unique      |
+| name   | TEXT    | Not Null              |
+| mobile | TEXT    | Not Null              |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Partners Table
 
-## Stay in touch
+| Column    | Type | Constraints  |
+|-----------|------|--------------|
+| id        | TEXT | Primary Key  |
+| name      | TEXT | Not Null     |
+| fiscal_id | TEXT | Not Null     |
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Venues Table
 
-## License
+| Column     | Type | Constraints                        |
+|------------|------|------------------------------------|
+| id         | TEXT | Primary Key                        |
+| partner_id | TEXT | Foreign Key (References Partners)  |
+| name       | TEXT | Not Null                           |
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Discounts Table
+
+| Column      | Type    | Constraints                        |
+|-------------|---------|------------------------------------|
+| id          | TEXT    | Primary Key                        |
+| name        | TEXT    | Not Null                           |
+| percent_off | INTEGER | Not Null                           |
+| max_uses    | INTEGER | Not Null, Default: 0               |
+| venue_id    | TEXT    | Foreign Key (References Venues)    |
+
+### Tickets Table
+
+| Column  | Type | Constraints                        |
+|---------|------|------------------------------------|
+| id      | TEXT | Primary Key                        |
+| code    | TEXT | Not Null                           |
+| user_id | TEXT | Foreign Key (References Users)     |
+
+### TicketUses Table
+
+| Column      | Type | Constraints                          |
+|-------------|------|--------------------------------------|
+| id          | TEXT | Primary Key                          |
+| ticket_id   | TEXT | Foreign Key (References Tickets)     |
+| discount_id | TEXT | Foreign Key (References Discounts)   |
+| created_at  | INT  | Timestamp                            |
+
+## 🔐 Authentication
+
+- **Attendees**: No authentication required to generate tickets.
+- **Partners**: Authenticate using BasicAuth. Credentials are stored securely in an encrypted array within a TypeScript file, not in environment variables.
+
+## 📱 QR Code Scanning
+
+Partners can scan attendee tickets using the built-in QR code scanner. Upon scanning:
+
+1. The application decodes the ticket information.
+2. Validates the ticket's authenticity and usage count.
+3. Registers the usage if valid, decrementing the remaining discounts.
+
+## 📄 License
+
+This project is licensed under the MIT License.
