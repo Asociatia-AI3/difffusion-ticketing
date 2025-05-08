@@ -3,16 +3,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import { User } from './user/user.entity';
 import { UserController } from './user.controller';
 import { ormConfig } from './config/orm.config';
 
+const dbConfig = {
+  ...ormConfig,
+  autoLoadEntities: true
+}
+
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      ...ormConfig,
-      autoLoadEntities: true,
-    }),
+    TypeOrmModule.forRoot(dbConfig),
     UserModule,
   ],
   controllers: [AppController, UserController],

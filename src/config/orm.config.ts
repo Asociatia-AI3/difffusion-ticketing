@@ -1,11 +1,14 @@
 // src/config/orm.config.ts
 import { DataSourceOptions } from 'typeorm';
 import { User } from '../user/user.entity';
+import { join } from 'path';
+
+const root = process.cwd();
 
 export const ormConfig: DataSourceOptions = {
   type: 'sqlite',
-  database: './ticketing.sqlite',
+  database:   join(root, 'ticketing.sqlite'),
   entities: [User],
-  migrations: ['src/migrations/*.ts'],
+  migrations: [join(root, 'migrations/*.ts')],
   synchronize: false,
 };
