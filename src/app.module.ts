@@ -5,14 +5,13 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
 import { UserController } from './user.controller';
+import { ormConfig } from './config/orm.config';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: './ticketing.sqlite',
-      entities: [User],
-      // synchronize: true,
+      ...ormConfig,
+      autoLoadEntities: true,
     }),
     UserModule,
   ],
