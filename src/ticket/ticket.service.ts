@@ -15,13 +15,4 @@ export class TicketService {
     async findByCode(code: string): Promise<Ticket | null> {
         return this.ticketRepo.findByCode(code);
     }
-
-    async useTicket(code: string): Promise<boolean> {
-        const ticket = await this.findByCode(code);
-        if(!ticket || ticket.uses >= ticket.maxUses) return false;
-
-        ticket.uses += 1;
-        await this.ticketRepo.save(ticket);
-        return true;
-    }
 }

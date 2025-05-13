@@ -21,11 +21,6 @@ export class TicketRepository {
 
   save(ticket: Ticket): Promise<Ticket> {
   return this.repo.save(ticket);
-}
-
-  async incrementUses(ticket: Ticket): Promise<Ticket> {
-    ticket.uses += 1;
-    return this.repo.save(ticket);
   }
 
   async delete(id: string): Promise<void> {

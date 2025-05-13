@@ -1,28 +1,22 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
+  Entity,
+  PrimaryColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { ulid } from 'ulid';
+import { User } from '../user/user.entity';
 
-import {User} from '../user/user.entity'
-
-@Entity('tickets') 
+@Entity('tickets')
 export class Ticket {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryColumn()
+  id: string = ulid();
 
-    @Column({unique: true})
-    code: string;
+  @Column({ unique: true })
+  code: string;
 
-    @Column({default: 5}) 
-    maxUses: number;
-
-    @Column({default: 0})
-    uses: number;
-
-    @ManyToOne(() => User, user => user.tickets, {onDelete: 'CASCADE'})
-    @JoinColumn({name: 'user_id'})
-    user: User;
+  @ManyToOne(() => User, user => user.tickets, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }
