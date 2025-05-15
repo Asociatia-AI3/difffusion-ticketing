@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { UserController } from './user.controller';
 import { ormConfig } from './config/orm.config';
-import { TicketModule } from './ticket/ticket.module';
 
 const dbConfig = {
   ...ormConfig,
@@ -16,7 +15,6 @@ const dbConfig = {
   imports: [
     TypeOrmModule.forRoot(dbConfig),
     UserModule,
-    TicketModule,
   ],
   controllers: [AppController, UserController],
   providers: [AppService],

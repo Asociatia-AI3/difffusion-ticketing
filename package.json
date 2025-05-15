@@ -27,15 +27,13 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
     "@tailwindcss/postcss": "^4.1.5",
-    "bcrypt": "^6.0.0",
     "hbs": "^4.2.0",
     "postcss": "^8.5.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
     "tailwindcss": "^4.1.5",
-    "typeorm": "^0.3.23",
-    "ulid": "^3.0.0"
+    "typeorm": "^0.3.23"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
