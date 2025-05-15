@@ -6,24 +6,21 @@ import {
   OneToMany,
 } from 'typeorm';
 import { ulid } from 'ulid';
-import { Ticket } from '../tickets/ticket.entity';
+import { Venue } from '../venue/venue.entity';
 
-@Entity('Users')
-export class User {
+@Entity('Partners')
+export class Partner {
   @PrimaryColumn({ type: 'varchar', length: 255 })
   id: string;
-
-  @Column({ unique: true, type: 'varchar', length: 20 })
-  email: string;
 
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column({ type: 'varchar', length: 20 })
-  mobile: string;
+  @Column({ name: 'fiscal_id', unique: true, type: 'varchar', length: 255 })
+  fiscalId: string;
 
-  @OneToMany(() => Ticket, (ticket) => ticket.user)
-  tickets: Ticket[];
+  @OneToMany(() => Venue, (venue) => venue.partner)
+  venues: Venue[];
 
   @BeforeInsert()
   generateId() {
