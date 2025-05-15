@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   @Render('index')
-  getHello() {
-    return { title: 'Home', message: 'Welcome' };
+  getIndex() {
+    return { title: 'Home', message: 'Welcome to the Home Page' };
   }
 }

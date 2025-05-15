@@ -1,10 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Ticket } from '../ticket/ticket.entity';
+import { ulid } from 'ulid';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string = ulid();
 
   @Column()
   name: string;
@@ -15,7 +16,6 @@ export class User {
   @Column()
   mobile: string;
 
-  @OneToMany(() => Ticket, ticket => ticket.user)
+  @OneToMany(() => Ticket, (ticket) => ticket.user)
   tickets: Ticket[];
 }
-

@@ -12,4 +12,3 @@ import { DiscountController } from './discount.controller';
   exports: [DiscountService],
 })
 export class DiscountModule {}
-
