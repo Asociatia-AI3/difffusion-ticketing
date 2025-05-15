@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
+import { TicketService} from '../ticket/ticket.service'
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepo: UserRepository) {}
+  constructor(
+    private readonly userRepo: UserRepository,
+    private readonly ticketService: TicketService
+  ) {}
 
   getAll(): Promise<User[]> {
     return this.userRepo.findAll();
