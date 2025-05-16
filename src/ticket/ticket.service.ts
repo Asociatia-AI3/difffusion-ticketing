@@ -4,15 +4,15 @@ import { Ticket } from './ticket.entity';
 
 @Injectable()
 export class TicketService {
-    constructor(
-        private readonly ticketRepo: TicketRepository,
-    ){}
+  constructor(private readonly ticketRepo: TicketRepository) {}
+  async getAll(): Promise<Ticket[]> {
+    return this.ticketRepo.findAll();
+  }
+  async create(ticketData: Partial<Ticket>): Promise<Ticket> {
+    return await this.ticketRepo.create(ticketData);
+  }
 
-    async create(ticketData: Partial<Ticket>): Promise<Ticket> {
-        return await this.ticketRepo.create(ticketData);
-    }
-
-    async findByCode(code: string): Promise<Ticket | null> {
-        return this.ticketRepo.findByCode(code);
-    }
+  async findByCode(code: string): Promise<Ticket | null> {
+    return this.ticketRepo.findByCode(code);
+  }
 }

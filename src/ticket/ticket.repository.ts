@@ -9,7 +9,9 @@ export class TicketRepository {
   constructor(private readonly dataSource: DataSource) {
     this.repo = dataSource.getRepository(Ticket);
   }
-
+  findAll(): Promise<Ticket[]> {
+    return this.repo.find();
+  }
   create(ticketData: Partial<Ticket>): Promise<Ticket> {
     const ticket = this.repo.create(ticketData);
     return this.repo.save(ticket);
@@ -20,7 +22,7 @@ export class TicketRepository {
   }
 
   save(ticket: Ticket): Promise<Ticket> {
-  return this.repo.save(ticket);
+    return this.repo.save(ticket);
   }
 
   async delete(id: string): Promise<void> {

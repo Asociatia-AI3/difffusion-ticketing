@@ -18,4 +18,3 @@ export class DiscountService {
     return this.discountRepo.findById(id);
   }
 }
-

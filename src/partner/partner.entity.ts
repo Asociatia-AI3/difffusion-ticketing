@@ -13,6 +13,6 @@ export class Partner {
   @Column({ name: 'fiscal_id' })
   fiscalId: string;
 
-  @OneToMany(() => Venue, venue => venue.partner)
+  @OneToMany(() => Venue, (venue) => venue.partner)
   venues: Venue[];
 }

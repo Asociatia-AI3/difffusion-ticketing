@@ -7,17 +7,17 @@ export class PartnerController {
   constructor(private readonly partnerService: PartnerService) {}
 
   @Post()
-  create(@Body() data: Partial<Partner>): Promise<Partner> {
-    return this.partnerService.create(data);
+  async create(@Body() data: Partial<Partner>): Promise<Partner> {
+    return await this.partnerService.create(data);
   }
 
   @Get()
-  findAll(): Promise<Partner[]> {
-    return this.partnerService.findAll();
+  async findAll(): Promise<Partner[]> {
+    return await this.partnerService.findAll();
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Promise<Partner | null> {
-    return this.partnerService.findById(id);
+  async findById(@Param('id') id: string): Promise<Partner | null> {
+    return await this.partnerService.findById(id);
   }
 }

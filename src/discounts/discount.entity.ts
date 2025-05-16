@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { ulid } from 'ulid';
 import { Venue } from '../venue/venue.entity'; // asigură-te că ai creat-o sau o creezi ulterior
 
