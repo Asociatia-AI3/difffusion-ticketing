@@ -17,7 +17,7 @@ export class UserController {
   @Get()
   @Render('user')
   async getAll() {
-    return { allusers: JSON.stringify(await this.userService.getAll()) };
+    return { allusers: await this.userService.getAll() };
   }
 
   @Get(':id')
@@ -28,7 +28,7 @@ export class UserController {
   @Post()
   async create(@Body() userData: Partial<User>) {
     await this.userService.create(userData);
-    return {};
+    return { message: 'User created successfully' };
   }
 
   @Delete(':id')
