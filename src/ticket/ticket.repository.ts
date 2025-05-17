@@ -9,23 +9,31 @@ export class TicketRepository {
   constructor(private readonly dataSource: DataSource) {
     this.repo = dataSource.getRepository(Ticket);
   }
-  findAll(): Promise<Ticket[]> {
-    return this.repo.find();
+
+  async findAll(): Promise<Ticket[]> {
+    return await this.repo.find();
   }
-  create(ticketData: Partial<Ticket>): Promise<Ticket> {
+  async create(ticketData: Partial<Ticket>): Promise<Ticket> {
     const ticket = this.repo.create(ticketData);
-    return this.repo.save(ticket);
+    return await this.repo.save(ticket);
   }
 
-  findByCode(code: string): Promise<Ticket | null> {
-    return this.repo.findOneBy({ code });
+  async findByCode(code: string): Promise<Ticket | null> {
+    return await this.repo.findOne({
+      where: { code },
+      relations: ['user'],
+    });
   }
 
-  save(ticket: Ticket): Promise<Ticket> {
-    return this.repo.save(ticket);
+  async save(ticket: Ticket): Promise<Ticket> {
+    return await this.repo.save(ticket);
   }
 
   async delete(id: string): Promise<void> {
     await this.repo.delete(id);
+  }
+
+  async findAllByUserId(userId: string): Promise<Ticket[]> {
+    return this.repo.findBy({ user: { id: userId } });
   }
 }

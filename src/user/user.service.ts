@@ -18,6 +18,10 @@ export class UserService {
     return this.userRepo.findById(id);
   }
 
+  getByEmail(email: string): Promise<User | null> {
+    return this.userRepo.findByEmail(email);
+  }
+
   create(userData: Partial<User>): Promise<User> {
     return this.userRepo.createUser(userData);
   }

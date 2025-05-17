@@ -9,10 +9,14 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.entity';
+import { TicketService } from 'src/ticket/ticket.service';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private ticketService: TicketService,
+  ) {}
 
   @Get()
   @Render('user')
@@ -23,6 +27,17 @@ export class UserController {
   @Get(':id')
   async getOne(@Param('id') id: string): Promise<User | null> {
     return await this.userService.getById(id);
+  }
+
+  @Get('email/:email')
+  async getByEmail(@Param('email') email: string) {
+    console.log('email', email);
+    const user = await this.userService.getByEmail(email);
+    if (!user) {
+      console.log('User not found');
+      return null;
+    }
+    return { user: user };
   }
 
   @Post()

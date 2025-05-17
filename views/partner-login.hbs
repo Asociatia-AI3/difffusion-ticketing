@@ -1,0 +1,261 @@
+{{#> main}}
+{{#*inline "content"}}
+<div class="flex justify-center items-start min-h-screen pt-8 sm:pt-12">
+    <div class="w-full max-w-lg bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center text-gray-700 mb-6 sm:mb-8">{{message}}</h1>
+
+        <div id="step1PartnerSelection" class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-600 mb-4 text-center">Step 1: Select Partner</h2>
+            <label for="partnerSelect" class="block text-sm font-medium text-gray-700 mb-1">Partner:</label>
+            <select id="partnerSelect" name="partner"
+                class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-gray-50">
+                <option value="">Please select a partner...</option>
+            </select>
+            <div id="partnerLoadingMessage" class="text-sm text-gray-500 italic mt-2 text-center">Loading partners...</div>
+        </div>
+
+        <div id="step2VenueSelection" class="mb-8" style="display: none;">
+            <h2 class="text-xl font-semibold text-gray-600 mb-4 text-center">Step 2: Select Venue</h2>
+            <label for="venueSelect" class="block text-sm font-medium text-gray-700 mb-1">Venue:</label>
+            <select id="venueSelect" name="venue"
+                class="mt-1 block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-gray-50">
+                <option value="">Please select a venue...</option>
+            </select>
+            <div id="venueLoadingMessage" class="text-sm text-gray-500 italic mt-2 text-center" style="display: none;">
+                Loading venues...</div>
+            <p id="noVenueMessage" class="text-sm text-gray-500 mt-2 text-center" style="display: none;">No venue found for this partner.</p>
+        </div>
+
+        <div id="step3LoginForm" style="display: none;">
+            <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">
+                Partner Login (<span id="selectedPartnerName" class="text-green-600"></span>
+                <span id="selectedVenueNameSpanContainer" style="display:none;"> / <span id="selectedVenueName"
+                        class="text-green-600"></span></span>)
+            </h2>
+            <form id="partnerLoginForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-600 mb-1">Username</label>
+                    <input type="text" id="username" name="username" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm
+                          focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-600 mb-1">Password</label>
+                    <input type="password" id="password" name="password" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm
+                          focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                </div>
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm
+                         text-base font-medium text-white bg-green-600 hover:bg-green-700
+                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    Login
+                </button>
+            </form>
+        </div>
+
+        <div id="partnerLoginResult" class="mt-8 p-4 text-center" style="display: none;">
+            <p class="text-lg text-green-700"></p>
+            <button id="scanQrButton"
+                class="mt-4 py-2 px-5 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+                style="display:none;">
+                go to QR Scan Page
+            </button>
+        </div>
+        <div id="partnerErrorMessage" class="mt-6 p-4 bg-red-50 border border-red-300 text-red-700 rounded-md"
+            style="display: none;"></div>
+        <p class="mt-8 text-center text-sm">
+            <a href="/" class="font-medium text-blue-600 hover:text-blue-500">Home</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    const partnerSelect = document.getElementById('partnerSelect');
+    const partnerLoadingMessage = document.getElementById('partnerLoadingMessage');
+    const step1PartnerSelection = document.getElementById('step1PartnerSelection');
+
+    const venueSelect = document.getElementById('venueSelect');
+    const venueLoadingMessage = document.getElementById('venueLoadingMessage');
+    const noVenueMessage = document.getElementById('noVenueMessage');
+    const step2VenueSelection = document.getElementById('step2VenueSelection');
+
+    const step3LoginForm = document.getElementById('step3LoginForm');
+    const partnerLoginForm = document.getElementById('partnerLoginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const selectedPartnerNameSpan = document.getElementById('selectedPartnerName');
+    const selectedVenueNameSpan = document.getElementById('selectedVenueName');
+    const selectedVenueNameSpanContainer = document.getElementById('selectedVenueNameSpanContainer');
+
+    const resultDiv = document.getElementById('partnerLoginResult');
+    const resultP = resultDiv.querySelector('p');
+    const errorDiv = document.getElementById('partnerErrorMessage');
+    const scanQrButton = document.getElementById('scanQrButton');
+
+    let allPartnersData = [];
+    let selectedPartnerId = null;
+    let selectedVenueId = null;
+    
+
+    async function loadPartners() {
+        if ( localStorage.getItem('partnerId')  && localStorage.getItem('venueId') ) {
+            window.location.href = `/qr-scan-page`;
+            return;
+        }
+        partnerLoadingMessage.style.display = 'block';
+        partnerSelect.disabled = true;
+        try {
+            const response = await fetch('/partners');
+            const data = await response.json();
+            partnerSelect.innerHTML = '<option value="">Please select a partner...</option>';
+
+            if (response.ok && data.partners && data.partners.length > 0) {
+                allPartnersData = data.partners;
+                allPartnersData.forEach(partner => {
+                    const option = document.createElement('option');
+                    option.value = partner.id;
+                    option.textContent = partner.name;
+                    partnerSelect.appendChild(option);
+                });
+                partnerLoadingMessage.style.display = 'none';
+            } else {
+                partnerLoadingMessage.textContent = data.message || 'No partner found or failed to load.';
+                allPartnersData = [];
+            }
+        } catch (error) {
+            console.error('Error fetching partners:', error);
+            partnerLoadingMessage.textContent = 'Error loading partners.';
+            allPartnersData = [];
+        } finally {
+            partnerSelect.disabled = false;
+        }
+    }
+
+    function handleVenueSelection() {
+        selectedVenueId = venueSelect.value;
+        if (selectedVenueId) {
+            selectedVenueNameSpan.textContent = venueSelect.options[venueSelect.selectedIndex].text;
+            scanQrButton.dataset.venueName = selectedVenueNameSpan.textContent;
+            selectedVenueNameSpanContainer.style.display = 'inline';
+        } else {
+            selectedVenueNameSpanContainer.style.display = 'none';
+        }
+        step3LoginForm.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', loadPartners);
+
+    partnerSelect.addEventListener('change', function () {
+        const partnerId = this.value;
+        selectedPartnerId = partnerId;
+
+        step2VenueSelection.style.display = 'none';
+        venueSelect.innerHTML = '<option value="">Please select a venue...</option>';
+        venueSelect.disabled = true;
+        noVenueMessage.style.display = 'none';
+        step3LoginForm.style.display = 'none';
+        selectedVenueId = null;
+        selectedVenueNameSpanContainer.style.display = 'none';
+
+        if (partnerId) {
+            selectedPartnerNameSpan.textContent = this.options[this.selectedIndex].text;
+            const selectedPartner = allPartnersData.find(p => p.id === partnerId);
+
+            if (selectedPartner && Array.isArray(selectedPartner.venues) && selectedPartner.venues.length > 0) {
+                step2VenueSelection.style.display = 'block';
+                venueSelect.disabled = false;
+                selectedPartner.venues.forEach(venue => {
+                    const option = document.createElement('option');
+                    option.value = venue.id;
+                    option.textContent = venue.name;
+                    venueSelect.appendChild(option);
+                });
+
+                if (selectedPartner.venues.length === 1) {
+                    venueSelect.value = selectedPartner.venues[0].id;
+                    handleVenueSelection();
+                }
+            } else {
+                step2VenueSelection.style.display = 'none';
+                step3LoginForm.style.display = 'block';
+            }
+        } else {
+            selectedPartnerNameSpan.textContent = '';
+        }
+    });
+
+    venueSelect.addEventListener('change', handleVenueSelection);
+
+    partnerLoginForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        if (!selectedPartnerId) {
+            errorDiv.textContent = 'Please select a partner first.';
+            errorDiv.style.display = 'block';
+            return;
+        }
+
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        resultDiv.style.display = 'none';
+        scanQrButton.style.display = 'none';
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+
+        try {
+            const basicAuthToken = btoa(username + ':' + password);
+            const response = await fetch('/partners/authenticate', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + basicAuthToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    partnerId: selectedPartnerId,
+                    venueId: selectedVenueId
+                })
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || `HTTP error ${response.status}`);
+            }
+
+            resultP.textContent = data.message || `Login successful! (${data.partner?.name || 'Partner'})`;
+            resultDiv.style.display = 'block';
+
+            if (data.partner && data.partner.id) {
+                scanQrButton.dataset.loggedInPartnerId = data.partner.id;
+                scanQrButton.dataset.partnerName = data.partner.name;
+    
+                scanQrButton.style.display = 'inline-block';
+            }
+
+            partnerLoginForm.reset();
+            step1PartnerSelection.style.display = 'none';
+            step2VenueSelection.style.display = 'none';
+            step3LoginForm.style.display = 'none';
+
+        } catch (error) {
+            console.error('Partner Login Error:', error);
+            errorDiv.textContent = error.message || 'An error occurred during login.';
+            errorDiv.style.display = 'block';
+        }
+    });
+
+    scanQrButton.addEventListener('click', function () {
+            const loggedInPartnerId = this.dataset.loggedInPartnerId;
+            
+            if (loggedInPartnerId) {
+                let redirectUrl = `/qr-scan-page`;
+                localStorage.setItem('partnerId', loggedInPartnerId);
+                localStorage.setItem('venueId', selectedVenueId);
+                localStorage.setItem('partnerName', this.dataset.partnerName);
+                localStorage.setItem('venueName', this.dataset.venueName);
+                window.location.href = redirectUrl;
+            } else {
+                alert('Logged in partner ID not found. Please login again.');
+            }
+        });
+</script>
+{{/inline}}
+{{/main}}

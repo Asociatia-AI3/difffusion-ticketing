@@ -17,4 +17,14 @@ export class DiscountController {
   async create(@Body() data: Partial<Discount>) {
     return await this.discountService.create(data);
   }
+
+  @Get('/venue/:id')
+  async findByVenueId(@Param('id') id: string) {
+    const data = await this.discountService.findByVenueId(id);
+    console.log('id', id);
+    console.log('data', data);
+    return {
+      discounts: data,
+    };
+  }
 }

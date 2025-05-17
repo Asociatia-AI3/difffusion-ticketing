@@ -15,10 +15,8 @@ export class TicketUse {
   id: string = ulid();
 
   @ManyToOne(() => Ticket, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'ticket_id' })
   ticket: Ticket;
-
-  @Column()
-  usedAt: Date = new Date();
 
   @ManyToOne(() => Discount, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'discount_id' })

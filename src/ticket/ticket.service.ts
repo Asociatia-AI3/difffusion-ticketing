@@ -15,4 +15,7 @@ export class TicketService {
   async findByCode(code: string): Promise<Ticket | null> {
     return this.ticketRepo.findByCode(code);
   }
+  async findAllByUserId(userId: string): Promise<Ticket[]> {
+    return this.ticketRepo.findAllByUserId(userId);
+  }
 }

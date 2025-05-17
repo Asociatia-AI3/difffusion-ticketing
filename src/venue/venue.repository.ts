@@ -19,8 +19,8 @@ export class VenueRepository {
     return this.repo.find({ relations: ['partner'] });
   }
 
-  findById(id: string): Promise<Venue | null> {
-    return this.repo.findOne({
+  async findById(id: string): Promise<Venue | null> {
+    return await this.repo.findOne({
       where: { id },
       relations: ['partner'],
     });
