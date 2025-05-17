@@ -15,6 +15,8 @@ import { PartnerModule } from './partner/partner.module';
 import { VenueModule } from './venue/venue.module';
 import { DiscountModule } from './discount/discount.module';
 import { TicketUseModule } from './ticketuse/ticket-use.module';
+import { TicketProcessingController } from './ticketprocessing/ticket.processing.controller';
+import { TicketProcessingService } from './ticketprocessing/ticket.processing.service';
 
 const dbConfig = {
   ...ormConfig,
@@ -39,7 +41,8 @@ const dbConfig = {
     DiscountController,
     TicketController,
     TicketUseController,
+    TicketProcessingController,
   ],
-  providers: [AppService],
+  providers: [AppService, TicketProcessingService],
 })
 export class AppModule {}

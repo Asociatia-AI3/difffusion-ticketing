@@ -27,7 +27,7 @@ export class PartnerController {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return { message: 'Login successful', redirectTo: '/partner' };
+    return { message: 'Login successful' };
   }
 
   @Get('encrypt')

@@ -6,44 +6,18 @@
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<div class="container">
-  <div class="box user-box">
-    <h2>User</h2>
-    <button onclick="document.getElementById('userModal').style.display='flex'">Generate Ticket</button>
+<div id="headerText">Use application as</div>
+<div class="box-container" id="buttonContainer">
+  <div class="box user-box" onclick="selectRole('User')" id="userBox">
+    <span>User</span>
   </div>
-
-  <div class="box partner-box">
-    <h2>Partner</h2>
-    <button onclick="document.getElementById('partnerModal').style.display='flex'">Log In</button>
+  <div class="box partner-box" onclick="selectRole('Partner')" id="partnerBox">
+    <span>Partner</span>
   </div>
 </div>
 
-<!-- User Modal -->
-<div id="userModal" class="modal">
-  <div class="modal-content">
-    <h3>Enter your name</h3>
-    <input type="text" placeholder="Your name" />
-    <div class="modal-actions">
-      <button onclick="document.getElementById('userModal').style.display='none'">Close</button>
-    </div>
-  </div>
-</div>
+<button id="backButton" onclick="goBack()">Back</button>
 
-<!-- Partner Modal -->
-<div id="partnerModal" class="modal">
-  <div class="modal-content">
-    <h3>Partner Login</h3>
-    <form id="partnerLoginForm" onsubmit="handlePartnerLogin(event)">
-      <input type="text" name="username" placeholder="Partner name" required />
-      <input type="password" name="password" placeholder="Password" required />
-      <div class="modal-actions">
-        <button type="button" onclick="document.getElementById('partnerModal').style.display='none'">Cancel</button>
-        <button type="submit">Log In</button>
-      </div>
-    </form>
-    <p id="loginError" style="color:red; display:none; margin-top:10px;">Wrong credentials</p>
-  </div>
-</div>
+<script src="/js/script.js"></script>
 </body>
-<script src="/js/login.js"></script>
 </html>
