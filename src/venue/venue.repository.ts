@@ -11,7 +11,7 @@ export class VenueRepository {
   }
 
   async create(venue: Venue): Promise<Venue> {
-    return this.repo.save(venue);
+    return this.repo.save(this.repo.create(venue));
   }
 
   async findAll(): Promise<Venue[]> {

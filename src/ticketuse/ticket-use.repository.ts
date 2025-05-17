@@ -11,7 +11,7 @@ export class TicketUseRepository {
   }
 
   async create(ticketUse: TicketUse): Promise<TicketUse> {
-    return this.repo.save(ticketUse);
+    return this.repo.save(this.repo.create(ticketUse));
   }
 
   async findAll(): Promise<TicketUse[]> {

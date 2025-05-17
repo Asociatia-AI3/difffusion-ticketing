@@ -6,13 +6,39 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PartnerService } from './partner.service';
 import { Partner } from './partner.entity';
+import { encrypt } from '../auth/crypto-utils';
+import { validatePartner } from '../auth/partner-credentials';
 
 @Controller('partner')
 export class PartnerController {
   constructor(private readonly partnerService: PartnerService) {}
+
+  @Post('login')
+  handleLogin(@Body() body: { username: string; password: string }) {
+    const { username, password } = body;
+    const isValid = validatePartner(username, password);
+
+    if (!isValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    return { message: 'Login successful', redirectTo: '/partner' };
+  }
+
+  @Get('encrypt')
+  encrypt(@Query('text') text: string) {
+    if (!text) {
+      return { error: 'Missing `text` query param' };
+    }
+
+    const encrypted = encrypt(text);
+    return { result: encrypted };
+  }
 
   //Create
   @Post()

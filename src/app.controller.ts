@@ -8,6 +8,6 @@ export class AppController {
   @Get()
   @Render('index')
   getHello() {
-    return { title: 'Home', message: 'Welcome' };
+    return { title: 'Home' };
   }
 }

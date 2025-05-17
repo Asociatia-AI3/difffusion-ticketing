@@ -11,7 +11,8 @@ export class PartnerRepository {
   }
 
   async create(partner: Partner): Promise<Partner> {
-    return this.repo.save(partner);
+    const createdPartner = this.repo.create(partner);
+    return this.repo.save(createdPartner);
   }
 
   async findAll(): Promise<Partner[]> {

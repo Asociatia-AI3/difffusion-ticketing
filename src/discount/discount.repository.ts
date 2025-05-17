@@ -11,7 +11,7 @@ export class DiscountRepository {
   }
 
   async create(discount: Discount): Promise<Discount> {
-    return this.repo.save(discount);
+    return this.repo.save(this.repo.create(discount));
   }
 
   async findAll(): Promise<Discount[]> {

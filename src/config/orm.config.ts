@@ -10,5 +10,5 @@ export const ormConfig: DataSourceOptions = {
   database: join(root, 'ticketing.sqlite'),
   entities: [User],
   migrations: [join(root, 'migrations/*.ts')],
-  synchronize: false,
+  synchronize: true,
 };
