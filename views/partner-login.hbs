@@ -112,10 +112,6 @@
             const data = await response.json();
             if (response.ok) {
                 window.location.href = `/qr-scan-page`;
-            }else {
-                localStorage.removeItem('partnerId');
-                localStorage.removeItem('venueId');
-                localStorage.removeItem('authPartnerToken');
             }
 
         }
