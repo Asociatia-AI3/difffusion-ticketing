@@ -98,6 +98,7 @@ export class DiscountController {
 
   @Get('/venue/:id')
   async findByVenueId(@Param('id') id: string) {
+    console.log('Finding discounts for venue with ID:', id);
     const data = await this.discountService.findByVenueId(id);
     console.log('id', id);
     console.log('data', data);

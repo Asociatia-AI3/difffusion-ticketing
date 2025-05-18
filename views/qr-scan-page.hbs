@@ -119,6 +119,7 @@
         try {
             const response = await fetch(`/discounts/venue/${activeVenueId}`);
             const discountData = await response.json();
+            console.log("Discounts response:", discountData);
 
             toggleElementDisplay(discountsLoadingMessage, false);
 
