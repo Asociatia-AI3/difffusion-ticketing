@@ -15,6 +15,11 @@ export class TicketRepository {
     return this.repo.save(ticket);
   }
 
+  findAll(): Promise<Ticket[]> {
+     return this.repo.find();
+  }
+  
+
   findByCode(code: string): Promise<Ticket | null> {
     return this.repo.findOneBy({ code });
   }
