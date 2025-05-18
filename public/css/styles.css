@@ -9,15 +9,18 @@ body {
     justify-content: center;
     transition: background-color 0.5s;
 }
+
 #headerText {
     font-size: 24px;
     margin-bottom: 40px;
 }
+
 .box-container {
     display: flex;
     gap: 40px;
     transition: all 0.5s ease;
 }
+
 .box {
     width: 300px;
     height: 200px;
@@ -31,53 +34,60 @@ body {
     cursor: pointer;
     transition: all 0.5s ease;
 }
+
 .user-box {
     background-color: #B1C29E;
 }
+
 .partner-box {
     background-color: #659287;
 }
+
 .hidden {
     display: none !important;
 }
+
 .centered {
     margin: 0 auto;
 }
+
 .action-button {
     background-color: #DEAA79;
     color: black;
     border: solid black 1px;
     border-radius: 10px;
     padding: 10px 20px;
-    margin-top: 20px;
+    margin: 20px 10px 0 0;
     font-size: 16px;
     cursor: pointer;
     box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15),
     -6px -6px 10px -1px rgba(255, 255, 255, 0.7);
 }
+
 .action-button:hover {
     transform: scale(1.1);
 }
-.modal-actions {
-    /*margin-top: 20px;*/
-}
-.box input {
+
+.box input, .modal input {
     width: 80%;
     padding: 8px;
     margin: 5px 0;
     border-radius: 8px;
     border: 1px solid #ccc;
 }
-.box #partnerLoginForm {
+
+.box #partnerLoginForm, .box #generateTicketForm {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 #loginError {
     color: red;
     margin-top: 10px;
 }
+
 #backButton {
     margin-top: 20px;
     background: transparent;
@@ -90,6 +100,33 @@ body {
     box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, 0.15),
     -6px -6px 10px -1px rgba(255, 255, 255, 0.7);
 }
+
 #backButton:hover {
     transform: scale(1.1);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #FFE6A9;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userDetails::placeholder {
+    color: red;
 }

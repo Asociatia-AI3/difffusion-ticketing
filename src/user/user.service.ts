@@ -25,4 +25,8 @@ export class UserService {
   update(id: string, partial: Partial<User>): Promise<void> {
     return this.userRepo.update(id, partial);
   }
+
+  findByEmail(email: string): Promise<User | null> {
+    return this.userRepo.findByEmail(email);
+  }
 }

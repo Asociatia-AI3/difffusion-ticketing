@@ -30,4 +30,8 @@ export class UserRepository {
   async update(id: string, partial: Partial<User>): Promise<void> {
     await this.repo.update(id, partial);
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.repo.findOne({ where: { email } });
+  }
 }

@@ -23,8 +23,8 @@ export class Venue {
   @JoinColumn({ name: 'partner_id' })
   partner: Partner;
 
-  @OneToMany(() => Discount, (discount) => discount.venue)
-  discounts: Discount[];
+  @OneToMany(() => Discount, (discount) => discount.venue, { lazy: true })
+  discounts: Promise<Discount[]>;
 
   @BeforeInsert()
   generateId() {
