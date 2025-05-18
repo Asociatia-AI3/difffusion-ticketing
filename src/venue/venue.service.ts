@@ -6,15 +6,15 @@ import { Venue } from './venue.entity';
 export class VenueService {
   constructor(private readonly venueRepo: VenueRepository) {}
 
-  create(venueData: Partial<Venue>): Promise<Venue> {
-    return this.venueRepo.create(venueData);
+  async create(venueData: Partial<Venue>): Promise<Venue> {
+    return await this.venueRepo.create(venueData);
   }
 
-  findAll(): Promise<Venue[]> {
-    return this.venueRepo.findAll();
+  async findAll(): Promise<Venue[]> {
+    return await this.venueRepo.findAll();
   }
 
-  findById(id: string): Promise<Venue | null> {
-    return this.venueRepo.findById(id);
+  async findById(id: string): Promise<Venue | null> {
+    return await this.venueRepo.findById(id);
   }
 }

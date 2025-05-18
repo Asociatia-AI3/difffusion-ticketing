@@ -20,6 +20,6 @@ export class PartnerRepository {
   }
 
   findById(id: string): Promise<Partner | null> {
-    return this.repo.findOne({ where: { id }, relations: ['venues'] });
+    return this.repo.findOne({ where: { id: id } });
   }
 }

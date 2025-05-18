@@ -5,7 +5,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import * as hbs from 'hbs';
 
 async function bootstrap() {
-  
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const root = process.cwd();
   app.useStaticAssets(join(root, 'public'));

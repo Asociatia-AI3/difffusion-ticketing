@@ -6,16 +6,23 @@ import { Discount } from './discount.entity';
 export class DiscountService {
   constructor(private readonly discountRepo: DiscountRepository) {}
 
-  create(discountData: Partial<Discount>): Promise<Discount> {
-    return this.discountRepo.create(discountData);
+  async create(discountData: Partial<Discount>): Promise<Discount> {
+    return await this.discountRepo.create(discountData);
   }
 
-  findAll(): Promise<Discount[]> {
-    return this.discountRepo.findAll();
+  async findAll(): Promise<Discount[]> {
+    return await this.discountRepo.findAll();
   }
 
-  findById(id: string): Promise<Discount | null> {
-    return this.discountRepo.findById(id);
+  async findById(id: string): Promise<Discount | null> {
+    return await this.discountRepo.findById(id);
+  }
+
+  async findByVenueId(venueId: string): Promise<Discount[]> {
+    return await this.discountRepo.findByVenueId(venueId);
+  }
+
+  async update(id: string): Promise<Discount | null> {
+    return await this.discountRepo.update(id);
   }
 }
-
