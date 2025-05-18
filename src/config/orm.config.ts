@@ -7,8 +7,8 @@ const root = process.cwd();
 
 export const ormConfig: DataSourceOptions = {
   type: 'sqlite',
-  database:   join(root, 'ticketing.sqlite'),
+  database: join(root, 'ticketing.sqlite'),
   entities: [User],
   migrations: [join(root, 'migrations/*.ts')],
-  synchronize: false,
+  synchronize: true,
 };

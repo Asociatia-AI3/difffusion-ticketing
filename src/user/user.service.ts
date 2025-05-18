@@ -1,20 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from './user.entity';
-import { TicketService} from '../ticket/ticket.service'
 
 @Injectable()
 export class UserService {
-  constructor(
-    private readonly userRepo: UserRepository,
-    private readonly ticketService: TicketService
-  ) {}
+  constructor(private readonly userRepo: UserRepository) {}
 
   getAll(): Promise<User[]> {
     return this.userRepo.findAll();
   }
 
-  getById(id: number): Promise<User | null> {
+  getById(id: string): Promise<User | null> {
     return this.userRepo.findById(id);
   }
 
@@ -22,7 +18,15 @@ export class UserService {
     return this.userRepo.createUser(userData);
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: string): Promise<void> {
     return this.userRepo.deleteUser(id);
+  }
+
+  update(id: string, partial: Partial<User>): Promise<void> {
+    return this.userRepo.update(id, partial);
+  }
+
+  findByEmail(email: string): Promise<User | null> {
+    return this.userRepo.findByEmail(email);
   }
 }

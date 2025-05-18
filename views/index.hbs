@@ -1,9 +1,45 @@
-{{#> main}}
-  {{#*inline "content"}}
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">{{message}}</h1>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div id="headerText">Use application as</div>
+<div class="box-container" id="buttonContainer">
+  <div class="box user-box" onclick="selectRole('User')" id="userBox">
+    <span>User</span>
+  </div>
+  <div class="box partner-box" onclick="selectRole('Partner')" id="partnerBox">
+    <span>Partner</span>
+  </div>
+</div>
+
+<button id="backButton" onclick="goBack()">Back</button>
+
+<div id="ticketModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Enter your details</h3>
+    <div id="generateTicketForm">
+      <input id="name" type="text" name="name" placeholder="Name" autocomplete="off"/>
+      <input id="email" type="email" name="email" placeholder="Email" autocomplete="off"/>
+      <input id="phone" type="tel" name="phone" placeholder="Phone" autocomplete="off"/>
+      <button type="button" class="action-button" onclick="submitTicket()">Submit</button>
+      <button type="button" class="action-button" onclick="closeGenerateTicketModal()">Cancel</button>
     </div>
-  {{/inline}}
-{{/main}}
+  </div>
+</div>
+
+<input type="file" id="qrInput" accept="image/*" class="hidden" onchange="scanQRCode(event)" />
+
+<div id="popupMessage" class="popup">
+  <div id="popupText"></div>
+  <button onclick="closePopup()" class="popup-ok">OK</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script src="/js/script.js"></script>
+</body>
+</html>

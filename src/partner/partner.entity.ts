@@ -1,18 +1,29 @@
-import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  BeforeInsert,
+  OneToMany,
+} from 'typeorm';
 import { ulid } from 'ulid';
 import { Venue } from '../venue/venue.entity';
 
-@Entity('partners')
+@Entity('Partners')
 export class Partner {
-  @PrimaryColumn()
-  id: string = ulid();
+  @PrimaryColumn({ type: 'varchar', length: 255 })
+  id: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column({ name: 'fiscal_id' })
+  @Column({ name: 'fiscal_id', unique: true, type: 'varchar', length: 255 })
   fiscalId: string;
 
-  @OneToMany(() => Venue, venue => venue.partner)
+  @OneToMany(() => Venue, (venue) => venue.partner)
   venues: Venue[];
+
+  @BeforeInsert()
+  generateId() {
+    this.id = ulid();
+  }
 }

@@ -1,22 +1,33 @@
 import {
-    Entity,
-    PrimaryColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
+  Entity,
+  PrimaryColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+  BeforeInsert,
 } from 'typeorm';
-import { ulid } from 'ulid';
 import { Partner } from '../partner/partner.entity';
+import { Discount } from '../discount/discount.entity';
+import { ulid } from 'ulid';
 
-@Entity('venues')
+@Entity('Venues')
 export class Venue {
-    @PrimaryColumn()
-    id: string = ulid();
+  @PrimaryColumn({ type: 'varchar', length: 255 })
+  id: string;
 
-    @Column()
-    name: string;
+  @Column({ type: 'varchar', length: 20 })
+  name: string;
 
-    @ManyToOne(() => Partner, {onDelete: 'CASCADE'})
-    @JoinColumn({name: 'partner_id'})
-    partner: Partner;
+  @ManyToOne(() => Partner, (partner) => partner.venues)
+  @JoinColumn({ name: 'partner_id' })
+  partner: Partner;
+
+  @OneToMany(() => Discount, (discount) => discount.venue, { lazy: true })
+  discounts: Promise<Discount[]>;
+
+  @BeforeInsert()
+  generateId() {
+    this.id = ulid();
+  }
 }

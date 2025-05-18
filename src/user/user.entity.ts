@@ -1,21 +1,32 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Ticket } from '../ticket/ticket.entity';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  BeforeInsert,
+  OneToMany,
+} from 'typeorm';
+import { ulid } from 'ulid';
+import { Ticket } from '../tickets/ticket.entity';
 
-@Entity('users')
+@Entity('Users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn({ type: 'varchar', length: 255 })
+  id: string;
 
-  @Column()
-  name: string;
-
-  @Column({ unique: true })
+  @Column({ unique: true, type: 'varchar', length: 20 })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
+  name: string;
+
+  @Column({ type: 'varchar', length: 20 })
   mobile: string;
 
-  @OneToMany(() => Ticket, ticket => ticket.user)
+  @OneToMany(() => Ticket, (ticket) => ticket.user)
   tickets: Ticket[];
-}
 
+  @BeforeInsert()
+  generateId() {
+    this.id = ulid();
+  }
+}

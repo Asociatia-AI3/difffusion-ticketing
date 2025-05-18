@@ -6,8 +6,8 @@ import { Partner } from './partner.entity';
 export class PartnerService {
   constructor(private readonly partnerRepo: PartnerRepository) {}
 
-  create(data: Partial<Partner>): Promise<Partner> {
-    return this.partnerRepo.create(data);
+  createPartner(partner: Partner): Promise<Partner> {
+    return this.partnerRepo.create(partner);
   }
 
   findAll(): Promise<Partner[]> {
@@ -16,5 +16,13 @@ export class PartnerService {
 
   findById(id: string): Promise<Partner | null> {
     return this.partnerRepo.findById(id);
+  }
+
+  update(id: string, partial: Partial<Partner>): Promise<void> {
+    return this.partnerRepo.update(id, partial);
+  }
+
+  delete(id: string): Promise<void> {
+    return this.partnerRepo.delete(id);
   }
 }

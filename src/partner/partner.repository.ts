@@ -10,16 +10,24 @@ export class PartnerRepository {
     this.repo = dataSource.getRepository(Partner);
   }
 
-  create(data: Partial<Partner>): Promise<Partner> {
-    const partner = this.repo.create(data);
-    return this.repo.save(partner);
+  async create(partner: Partner): Promise<Partner> {
+    const createdPartner = this.repo.create(partner);
+    return this.repo.save(createdPartner);
   }
 
-  findAll(): Promise<Partner[]> {
-    return this.repo.find({ relations: ['venues'] });
+  async findAll(): Promise<Partner[]> {
+    return this.repo.find();
   }
 
-  findById(id: string): Promise<Partner | null> {
-    return this.repo.findOne({ where: { id }, relations: ['venues'] });
+  async findById(id: string): Promise<Partner | null> {
+    return this.repo.findOneBy({ id });
+  }
+
+  async update(id: string, partial: Partial<Partner>): Promise<void> {
+    await this.repo.update(id, partial);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repo.delete(id);
   }
 }

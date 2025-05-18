@@ -6,8 +6,8 @@ import { Venue } from './venue.entity';
 export class VenueService {
   constructor(private readonly venueRepo: VenueRepository) {}
 
-  create(venueData: Partial<Venue>): Promise<Venue> {
-    return this.venueRepo.create(venueData);
+  create(venue: Venue): Promise<Venue> {
+    return this.venueRepo.create(venue);
   }
 
   findAll(): Promise<Venue[]> {
@@ -16,5 +16,13 @@ export class VenueService {
 
   findById(id: string): Promise<Venue | null> {
     return this.venueRepo.findById(id);
+  }
+
+  update(id: string, partial: Partial<Venue>): Promise<void> {
+    return this.venueRepo.update(id, partial);
+  }
+
+  delete(id: string): Promise<void> {
+    return this.venueRepo.delete(id);
   }
 }

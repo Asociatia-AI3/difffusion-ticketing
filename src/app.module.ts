@@ -3,22 +3,46 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import { UserController } from './user.controller';
+import { UserController } from './user/user.controller';
 import { ormConfig } from './config/orm.config';
-import { TicketModule } from './ticket/ticket.module';
+import { PartnerController } from './partner/partner.controller';
+import { VenueController } from './venue/venue.controller';
+import { DiscountController } from './discount/discount.controller';
+import { TicketController } from './tickets/ticket.controller';
+import { TicketUseController } from './ticketuse/ticket-use.controller';
+import { TicketModule } from './tickets/ticket.module';
+import { PartnerModule } from './partner/partner.module';
+import { VenueModule } from './venue/venue.module';
+import { DiscountModule } from './discount/discount.module';
+import { TicketUseModule } from './ticketuse/ticket-use.module';
+import { TicketProcessingController } from './ticketprocessing/ticket.processing.controller';
+import { TicketProcessingService } from './ticketprocessing/ticket.processing.service';
 
 const dbConfig = {
   ...ormConfig,
-  autoLoadEntities: true
-}
+  autoLoadEntities: true,
+};
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
     UserModule,
+    PartnerModule,
+    VenueModule,
+    DiscountModule,
     TicketModule,
+    TicketUseModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService],
+  controllers: [
+    AppController,
+    UserController,
+    PartnerController,
+    VenueController,
+    DiscountController,
+    TicketController,
+    TicketUseController,
+    TicketProcessingController,
+  ],
+  providers: [AppService, TicketProcessingService],
 })
 export class AppModule {}
