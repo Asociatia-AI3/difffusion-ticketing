@@ -96,10 +96,33 @@
     
 
     async function loadPartners() {
-        if ( localStorage.getItem('partnerId')  && localStorage.getItem('venueId') ) {
-            window.location.href = `/qr-scan-page`;
-            return;
+        if ( localStorage.getItem('partnerId')  && localStorage.getItem('venueId') && localStorage.getItem('authPartnerToken')) { 
+            const response = await fetch('/partners/authenticate', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + localStorage.getItem('authPartnerToken'),
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    partnerId: localStorage.getItem('partnerId'),
+                    venueId: localStorage.getItem('venueId')
+                })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                window.location.href = `/qr-scan-page`;
+            }else {
+                localStorage.removeItem('partnerId');
+                localStorage.removeItem('venueId');
+                localStorage.removeItem('authPartnerToken');
+            }
+
         }
+
+                    
+        
+        
         partnerLoadingMessage.style.display = 'block';
         partnerSelect.disabled = true;
         try {
@@ -201,17 +224,17 @@
         errorDiv.textContent = '';
 
         try {
-            const basicAuthToken = btoa(username + ':' + password);
             const response = await fetch('/partners/authenticate', {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Basic ' + basicAuthToken,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
                     partnerId: selectedPartnerId,
-                    venueId: selectedVenueId
+                    venueId: selectedVenueId,
+                    username: username,
+                    password: password
                 })
             });
             const data = await response.json();
@@ -220,6 +243,10 @@
                 throw new Error(data.message || `HTTP error ${response.status}`);
             }
 
+            localStorage.setItem('partnerId', selectedPartnerId);
+            localStorage.setItem('venueId', selectedVenueId);
+            localStorage.setItem("authPartnerToken", data.token);
+            
             resultP.textContent = data.message || `Login successful! (${data.partner?.name || 'Partner'})`;
             resultDiv.style.display = 'block';
 
@@ -246,11 +273,9 @@
             const loggedInPartnerId = this.dataset.loggedInPartnerId;
             
             if (loggedInPartnerId) {
-                let redirectUrl = `/qr-scan-page`;
-                localStorage.setItem('partnerId', loggedInPartnerId);
-                localStorage.setItem('venueId', selectedVenueId);
                 localStorage.setItem('partnerName', this.dataset.partnerName);
                 localStorage.setItem('venueName', this.dataset.venueName);
+                let redirectUrl = `/qr-scan-page`;
                 window.location.href = redirectUrl;
             } else {
                 alert('Logged in partner ID not found. Please login again.');

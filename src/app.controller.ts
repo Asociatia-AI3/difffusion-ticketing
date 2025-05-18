@@ -54,4 +54,13 @@ export class AppController {
       message: 'Scan the QR code',
     };
   }
+
+  @Get('/admin-setup')
+  @Render('admin-setup')
+  getAdminSetup() {
+    return {
+      title: 'Admin Setup',
+      message: 'Setup your admin account',
+    };
+  }
 }
