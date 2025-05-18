@@ -29,4 +29,14 @@ export class TicketUseRepository {
   async delete(id: string): Promise<void> {
     await this.repo.delete(id);
   }
+
+  async findAllByTicketId(ticketId: string): Promise<TicketUse[] | null> {
+    return this.repo.find({
+      where: {
+        ticket: {
+          id: ticketId,
+        },
+      },
+    });
+  }
 }

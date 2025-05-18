@@ -25,4 +25,8 @@ export class TicketUseService {
   delete(id: string): Promise<void> {
     return this.ticketUseRepository.delete(id);
   }
+
+  async getTicketUsesForTicket(ticketId: string): Promise<TicketUse[] | null> {
+    return this.ticketUseRepository.findAllByTicketId(ticketId);
+  }
 }

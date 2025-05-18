@@ -29,4 +29,8 @@ export class TicketRepository {
   async delete(id: string): Promise<void> {
     await this.repo.delete(id);
   }
+
+  async findByCode(code: string): Promise<Ticket | null> {
+    return this.repo.findOne({ where: { code } });
+  }
 }

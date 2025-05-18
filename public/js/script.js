@@ -1,6 +1,4 @@
 async function handlePartnerLogin() {
-  console.log('login');
-
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
@@ -19,9 +17,8 @@ async function handlePartnerLogin() {
     }
 
     const partnerBox = document.getElementById('partnerBox');
-    //TODO implement scanning functionality
     partnerBox.innerHTML = `
-          <button class="action-button" onclick="alert('Ticket scanned!')">Scan Ticket</button>
+          <button class="action-button" onclick="document.getElementById('qrInput').click()">Scan Ticket</button>
         `;
   } catch (err) {
     console.error('Login error:', err);
@@ -40,7 +37,6 @@ function selectRole(role) {
     document.body.style.backgroundColor = '#B1C29E';
     userBox.style.backgroundColor = '#DEAA79';
     header.innerText = 'User';
-    //TODO implement generation functionality
     userBox.innerHTML = `<button class="action-button" onclick="generateTicket()">Generate Ticket</button>`;
   } else if (role === 'Partner') {
     userBox.classList.add('hidden');
@@ -50,8 +46,8 @@ function selectRole(role) {
         <div class="box partner-box" id="partnerBox">
           <div id="partnerLoginForm" >
             <div id="loginError" style="display:none;">Wrong credentials</div>
-            <input id="username" type="text" name="username" placeholder="Partner name" required />
-            <input id="password" type="password" name="password" placeholder="Password" required />
+            <input id="username" type="text" name="username" placeholder="Partner name" autocomplete="off" />
+            <input id="password" type="password" name="password" placeholder="Password" autocomplete="off" />
             <div class="modal-actions">
               <button class="action-button" onclick="handlePartnerLogin()">Log In</button>
             </div>
@@ -96,7 +92,6 @@ function closeGenerateTicketModal() {
 }
 
 async function submitTicket() {
-  console.log('submit ticket');
   const nameInput = document.getElementById('name');
   const emailInput = document.getElementById('email');
   const phoneInput = document.getElementById('phone');
@@ -145,7 +140,7 @@ async function submitTicket() {
       if (err) return console.error('QR generation failed', err);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `ticket-${code}.png`;
+      link.download = `ticket-${body.name}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -155,4 +150,55 @@ async function submitTicket() {
   } catch (err) {
     console.error('Ticket generation error:', err);
   }
+}
+
+function resetQRInput() {
+  const qrInput = document.getElementById('qrInput');
+  qrInput.value = '';
+}
+
+function showPopupMessage(text) {
+  document.getElementById('popupText').textContent = text;
+  document.getElementById('popupMessage').style.display = 'flex';
+}
+
+function closePopup() {
+  document.getElementById('popupMessage').style.display = 'none';
+}
+
+async function scanQRCode(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const img = new Image();
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    img.onload = async function () {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+      if (code?.data) {
+        try {
+          const res = await fetch(`/process?code=${encodeURIComponent(code.data)}`);
+          const message = res.ok ? 'Ticket Valid' : 'Ticket Invalid';
+          showPopupMessage(message);
+        } catch (err) {
+          showPopupMessage('Error checking ticket');
+        }
+      } else {
+        showPopupMessage('No QR code found in image.');
+      }
+
+      resetQRInput();
+    };
+    img.src = e.target.result;
+  };
+
+  reader.readAsDataURL(file);
 }

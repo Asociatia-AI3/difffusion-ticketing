@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { TicketProcessingService } from './ticket.processing.service';
 import { UserDto } from '../dto/user.dto';
 
@@ -13,7 +20,13 @@ export class TicketProcessingController {
   }
 
   @Get()
-  scan() {
-    return this.ticketProcessingService.scan();
+  async scan(@Query('code') code: string) {
+    const isValid = await this.ticketProcessingService.scan(code);
+
+    if (!isValid) {
+      throw new BadRequestException('Invalid code');
+    }
+
+    return { message: 'Code is valid' };
   }
 }

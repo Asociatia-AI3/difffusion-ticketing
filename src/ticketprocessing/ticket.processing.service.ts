@@ -25,7 +25,7 @@ export class TicketProcessingService {
       //user found
       return await this.createTicket(user);
     } else {
-      //user not found
+      //user not found -> create user
       let user = new User();
       user.name = userDto.name;
       user.email = userDto.email;
@@ -62,13 +62,24 @@ export class TicketProcessingService {
     return ticket.code;
   }
 
-  scan() {
-    //TODO
-    //scan qr code
-    //find discount by id - get max uses
-    //validate find ticketUses for ticket id and discount id
-    //if<max uses add usage and return 200ok
-    //if>max uses return 400 BAD_REQUEST limit reached
-    //(show appropriate message in ui based on response)
+  async scan(code: string): Promise<boolean> {
+    const ticket = await this.ticketService.findByCode(code);
+    //ticket found
+    if (ticket) {
+      const ticketUses = await this.ticketUseService.getTicketUsesForTicket(
+        ticket.id,
+      );
+      //usages found -> remove a usage
+      if (ticketUses && ticketUses.length > 0) {
+        const ticketUse =
+          ticketUses[Math.floor(Math.random() * ticketUses.length)];
+        await this.ticketUseService.delete(ticketUse.id);
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }

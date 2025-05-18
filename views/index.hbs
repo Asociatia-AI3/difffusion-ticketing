@@ -22,16 +22,24 @@
   <div class="modal-content">
     <h3>Enter your details</h3>
     <div id="generateTicketForm">
-      <input id="name" type="text" name="name" placeholder="Name" required />
-      <input id="email" type="email" name="email" placeholder="Email" required />
-      <input id="phone" type="tel" name="phone" placeholder="Phone" required />
+      <input id="name" type="text" name="name" placeholder="Name" autocomplete="off"/>
+      <input id="email" type="email" name="email" placeholder="Email" autocomplete="off"/>
+      <input id="phone" type="tel" name="phone" placeholder="Phone" autocomplete="off"/>
       <button type="button" class="action-button" onclick="submitTicket()">Submit</button>
       <button type="button" class="action-button" onclick="closeGenerateTicketModal()">Cancel</button>
     </div>
   </div>
 </div>
 
-<script src="/js/script.js"></script>
+<input type="file" id="qrInput" accept="image/*" class="hidden" onchange="scanQRCode(event)" />
+
+<div id="popupMessage" class="popup">
+  <div id="popupText"></div>
+  <button onclick="closePopup()" class="popup-ok">OK</button>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script src="/js/script.js"></script>
 </body>
 </html>
