@@ -29,6 +29,7 @@ import { TicketUseModule } from './ticket-use/ticket_use.module';
 import { TicketController } from './ticket/ticket.controller';
 import { TicketService } from './ticket/ticket.service';
 import { TicketRepository } from './ticket/ticket.repository';
+import { QrModule } from './qr/qr.module';
 
 
 
@@ -44,7 +45,8 @@ const dbConfig = {
     TicketModule,
     DiscountModule,
     PartnerModule,
-    TicketUseModule
+    TicketUseModule,
+    QrModule
   ],
   controllers: [AppController, UserController, PartnerController, TicketUseController, VenueController, DiscountController, TicketController],
   providers: [AppService, DiscountService, VenueService, TicketUseService, PartnerService, UserService, DiscountRepository, VenueRepository, TicketUseRepository, PartnerRepository, UserRepository, TicketService, TicketRepository],

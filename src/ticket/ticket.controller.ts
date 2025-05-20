@@ -11,6 +11,11 @@ export class TicketController {
         return this.ticketService.findAll();
     }
 
+    @Get(':id/qr')
+        async getTicketQr(@Param('id') id: string): Promise<string> {
+        return this.ticketService.generateQr(id);
+    }
+
     @Get(':code')
     getOneByCode(@Param('code') code: string): Promise<Ticket | null> {
         return this.ticketService.findByCode(code);

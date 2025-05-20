@@ -31,4 +31,12 @@ export class TicketRepository {
   async delete(id: string): Promise<void> {
     await this.repo.delete(id);
   }
+
+  findOneById(id: string): Promise<Ticket | null> {
+    return this.repo.findOne({
+      where: {id}, 
+      relations: ['user'],
+    });
+    
+  }
 }
