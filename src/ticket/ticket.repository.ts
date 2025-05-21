@@ -15,6 +15,11 @@ export class TicketRepository {
     return this.repo.save(ticket);
   }
 
+  findAll(): Promise<Ticket[]> {
+     return this.repo.find();
+  }
+  
+
   findByCode(code: string): Promise<Ticket | null> {
     return this.repo.findOneBy({ code });
   }
@@ -25,5 +30,13 @@ export class TicketRepository {
 
   async delete(id: string): Promise<void> {
     await this.repo.delete(id);
+  }
+
+  findOneById(id: string): Promise<Ticket | null> {
+    return this.repo.findOne({
+      where: {id}, 
+      relations: ['user'],
+    });
+    
   }
 }

@@ -13,5 +13,7 @@ async function bootstrap() {
   hbs.registerPartials(join(root, 'views', 'layouts'));
   app.setViewEngine('hbs');
   await app.listen(process.env.PORT ?? 3000);
+
+  app.useStaticAssets(join(__dirname, '..', 'public'));
 }
 bootstrap();

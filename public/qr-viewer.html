@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Code Viewer</title>
+    <link rel="stylesheet" href="./css/qr-viewer-style.css">
+</head>
+<body>
+  <input type="text" id="ticketId" placeholder="Enter ticket ID (e.g. tkt1)" />
+  <button onclick="loadQr()">Generate QR</button>
+
+  <div>
+    <img id="qrImage" src="" alt="QR Code will appear here" />
+  </div>
+
+  <script>
+    async function loadQr() {
+      const ticketId = document.getElementById('ticketId').value.trim();
+      if (!ticketId) return alert('Please enter a ticket ID');
+        const response = await fetch(`http://localhost:3000/tickets/${ticketId}/qr`);
+        if (!response.ok) throw new Error('Ticket not found or server error');
+
+        const dataUrl = await response.text();
+        const img = document.getElementById('qrImage');
+        img.src = dataUrl;
+        img.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
