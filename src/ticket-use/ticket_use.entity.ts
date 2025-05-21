@@ -3,12 +3,13 @@ import { Ticket } from '../ticket/ticket.entity';
 import { Discount } from '../discounts/discount.entity';
 
 
-@Entity('ticket_uses') 
+@Entity('ticketuses')
 export class TicketUse {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Ticket, {onDelete: 'CASCADE'})
+    @ManyToOne(() => Ticket, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'ticket_id' })
     ticket: Ticket;
 
     @Column()

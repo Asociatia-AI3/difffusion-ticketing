@@ -6,7 +6,7 @@ import { Ticket } from './ticket.entity';
 export class TicketService {
     constructor(
         private readonly ticketRepo: TicketRepository,
-    ){}
+    ) { }
 
     async create(ticketData: Partial<Ticket>): Promise<Ticket> {
         return await this.ticketRepo.create(ticketData);
@@ -15,4 +15,9 @@ export class TicketService {
     async findByCode(code: string): Promise<Ticket | null> {
         return this.ticketRepo.findByCode(code);
     }
+
+    async findAll(): Promise<Ticket[]> {
+        return this.ticketRepo.findAll();
+    }
 }
+
