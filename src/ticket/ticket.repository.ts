@@ -15,12 +15,16 @@ export class TicketRepository {
     return this.repo.save(ticket);
   }
 
+  findAll(): Promise<Ticket[]> {
+    return this.repo.find();
+  }
+
   findByCode(code: string): Promise<Ticket | null> {
     return this.repo.findOneBy({ code });
   }
 
   save(ticket: Ticket): Promise<Ticket> {
-  return this.repo.save(ticket);
+    return this.repo.save(ticket);
   }
 
   async delete(id: string): Promise<void> {
