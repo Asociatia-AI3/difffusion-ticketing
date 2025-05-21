@@ -16,3 +16,5 @@ export class Partner {
   @OneToMany(() => Venue, venue => venue.partner)
   venues: Venue[];
 }
+
+
