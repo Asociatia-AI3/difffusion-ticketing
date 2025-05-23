@@ -4,6 +4,9 @@ import { Ticket } from './ticket.entity';
 
 @Injectable()
 export class TicketRepository {
+  findById(ticketId: string) {
+    throw new Error('Method not implemented.');
+  }
   private readonly repo: Repository<Ticket>;
 
   constructor(private readonly dataSource: DataSource) {

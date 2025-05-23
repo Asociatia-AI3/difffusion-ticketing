@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { UserController } from './user.controller';
 import { ormConfig } from './config/orm.config';
 import { TicketModule } from './ticket/ticket.module';
+import { TicketUseModule } from './ticket-use/ticket_use.module';
 
 const dbConfig = {
   ...ormConfig,
@@ -17,6 +18,7 @@ const dbConfig = {
     TypeOrmModule.forRoot(dbConfig),
     UserModule,
     TicketModule,
+    TicketUseModule,
   ],
   controllers: [AppController, UserController],
   providers: [AppService],
