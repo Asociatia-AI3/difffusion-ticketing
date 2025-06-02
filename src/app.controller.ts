@@ -10,9 +10,6 @@ import {
 import { AppService } from './app.service';
 import { UserService } from './user/user.service';
 import { TicketService } from './ticket/ticket.service';
-import { User } from './user/user.entity';
-import * as QRCode from 'qrcode';
-import { ulid } from 'ulid';
 
 @Controller()
 export class AppController {
