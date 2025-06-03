@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Tickets</title>
+</head>
+<body>
+  <h1>Tickets</h1>
+
+  <h2>Add New Ticket</h2>
+  <form method="POST" action="/admin/tickets/create">
+    <input type="text" name="title" placeholder="Title" required />
+    <input type="number" name="price" placeholder="Price" step="0.01" required />
+    <input type="number" name="discount" placeholder="Discount" step="0.01" required />
+
+    <!-- Kullanıcı seçimi -->
+    <select name="userId" required>
+      <option value="" disabled selected>Select User</option>
+      {{#each users}}
+        <option value="{{this.id}}">{{this.name}}</option>
+      {{/each}}
+    </select>
+
+    <button type="submit">Add Ticket</button>
+  </form>
+
+  <hr>
+
+  <h2>All Tickets</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Code</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Discount</th>
+        <th>QR Code</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each tickets}}
+        <tr>
+          <td>{{this.id}}</td>
+          <td>{{this.code}}</td>
+          <td>{{this.title}}</td>
+          <td>{{this.price}}</td>
+          <td>{{this.discount}}</td>
+          <td>
+            {{#if this.qrCode}}
+              <img src="{{this.qrCode}}" alt="QR Code" width="80" />
+            {{else}}
+              N/A
+            {{/if}}
+          </td>
+          <td>
+            <!-- Delete -->
+            <form method="POST" action="/admin/tickets/delete" style="display:inline">
+              <input type="hidden" name="id" value="{{this.id}}" />
+              <button type="submit">Delete</button>
+            </form>
+
+            <!-- Update -->
+            <form method="POST" action="/admin/tickets/update" style="display:inline">
+              <input type="hidden" name="id" value="{{this.id}}" />
+              <input type="text" name="title" placeholder="New Title" required />
+              <input type="number" name="price" placeholder="New Price" step="0.01" required />
+              <input type="number" name="discount" placeholder="New Discount" step="0.01" required />
+              <button type="submit">Update</button>
+            </form>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <br />
+  <a href="/admin">← Back to Admin Panel</a>
+</body>
+</html>
