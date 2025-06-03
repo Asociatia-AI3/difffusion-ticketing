@@ -19,7 +19,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:run": "npm run typeorm migration:run -- -d ./src/config/orm.config.ts",
+    "migration:generate": "npm run typeorm -- -d ./src/config/orm.config.ts migration:generate ./src/migrations/$npm_config_name",
+    "migration:create": "npm run typeorm -- migration:create ./src/migrations/$npm_config_name",
+    "migration:revert": "npm run typeorm -- -d ./src/config/orm.config.ts migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -27,9 +31,12 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
     "@tailwindcss/postcss": "^4.1.5",
+    "@types/qrcode": "^1.5.5",
     "bcrypt": "^6.0.0",
     "hbs": "^4.2.0",
+    "html5-qrcode": "^2.2.7",
     "postcss": "^8.5.3",
+    "qrcode": "^1.5.4",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",

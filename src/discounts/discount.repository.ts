@@ -10,19 +10,34 @@ export class DiscountRepository {
     this.repo = dataSource.getRepository(Discount);
   }
 
-  create(discountData: Partial<Discount>): Promise<Discount> {
+  async create(discountData: Partial<Discount>): Promise<Discount> {
     const discount = this.repo.create(discountData);
-    return this.repo.save(discount);
+    return await this.repo.save(discount);
   }
 
-  findAll(): Promise<Discount[]> {
-    return this.repo.find({ relations: ['venue'] });
+  async findAll() {
+    return await this.repo.find({ relations: ['venue'] });
   }
 
-  findById(id: string): Promise<Discount | null> {
-    return this.repo.findOne({
+  async findById(id: string): Promise<Discount | null> {
+    return await this.repo.findOne({
       where: { id },
       relations: ['venue'],
     });
+  }
+
+  async findByVenueId(venueId: string): Promise<Discount[]> {
+    return await this.repo.find({
+      where: { venue: { id: venueId } },
+    });
+  }
+
+  async update(id: string): Promise<Discount | null> {
+    const discount = await this.findById(id);
+    if (!discount) {
+      return null;
+    }
+    discount.maxUses -= 1;
+    return await this.repo.save(discount);
   }
 }

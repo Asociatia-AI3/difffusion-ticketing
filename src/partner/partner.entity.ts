@@ -13,6 +13,12 @@ export class Partner {
   @Column({ name: 'fiscal_id' })
   fiscalId: string;
 
-  @OneToMany(() => Venue, venue => venue.partner)
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
+
+  @OneToMany(() => Venue, (venue) => venue.partner)
   venues: Venue[];
 }
