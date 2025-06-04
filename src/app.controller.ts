@@ -60,4 +60,12 @@ export class AppController {
       message: 'Setup your admin account',
     };
   }
+  @Get('/admin-login')
+  @Render('admin-login')
+  getAdminLogin() {
+    return {
+      title: 'Admin Setup',
+      message: 'Setup your admin account',
+    };
+  }
 }

@@ -6,32 +6,6 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
         <div class="bg-white p-6 rounded-xl shadow-lg ring-1 ring-gray-900/5">
-            <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Create New Partner</h2>
-            <form id="createPartnerForm" class="space-y-4">
-                <div>
-                    <label for="partnerName" class="block text-sm font-medium text-gray-600">Partner Name:</label>
-                    <input type="text" id="partnerName" name="name" required class="mt-1 block w-full input-style">
-                </div>
-                <div>
-                    <label for="fiscalId" class="block text-sm font-medium text-gray-600">Fiscal ID (Tax No):</label>
-                    <input type="text" id="fiscalId" name="fiscalId" required class="mt-1 block w-full input-style">
-                </div>
-                <div>
-                    <label for="partnerUsername" class="block text-sm font-medium text-gray-600">Login Username:</label>
-                    <input type="text" id="partnerUsername" name="username" required
-                        class="mt-1 block w-full input-style">
-                </div>
-                <div>
-                    <label for="partnerPassword" class="block text-sm font-medium text-gray-600">Login Password:</label>
-                    <input type="password" id="partnerPassword" name="password" required
-                        class="mt-1 block w-full input-style">
-                </div>
-                <button type="submit" class="w-full btn-primary">Create Partner</button>
-                <div id="partnerFormMessage" class="mt-3 text-sm result-message"></div>
-            </form>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl shadow-lg ring-1 ring-gray-900/5">
             <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Create New Venue</h2>
             <form id="createVenueForm" class="space-y-4">
                 <div>
@@ -185,96 +159,15 @@
         }
     }
 
-    async function fetchPartners() {
-        try {
-            const response = await fetch('/partners');
-            const data = await response.json();
-            if (response.ok && data.partners) {
-                allPartnersCache = data.partners;
-                populatePartnerSelects(data.partners);
-            } else {
-                console.error("Failed to load partners:", data.message);
-                showMessage(partnerFormMessage, `Failed to load partners: ${data.message || 'Unknown error'}`, 'error');
-            }
-        } catch (error) {
-            console.error("Network error while loading partners:", error);
-            showMessage(partnerFormMessage, `Network error while loading partners: ${error.message}`, 'error');
-        }
-    }
 
-    function populatePartnerSelects(partners) {
-        [venuePartnerSelect, discountPartnerSelect].forEach(select => {
-            if (!select) return;
-            const currentValue = select.value;
-            select.innerHTML = '<option value="">Select Partner...</option>';
-            partners.forEach(partner => {
-                const option = new Option(partner.name, partner.id);
-                select.add(option);
-            });
-            if (partners.some(p => p.id === currentValue)) {
-                select.value = currentValue;
-            }
-        });
-    }
 
-    discountPartnerSelect.addEventListener('change', async function () {
-        const partnerId = this.value;
-        discountVenueSelect.innerHTML = '<option value="">Select Venue...</option>';
-        discountVenueSelect.disabled = true;
-        discountVenueSelect.classList.add('bg-gray-200');
 
-        if (partnerId) {
-            const selectedPartner = allPartnersCache.find(p => p.id === partnerId);
 
-            if (selectedPartner && Array.isArray(selectedPartner.venues) && selectedPartner.venues.length > 0) {
-                selectedPartner.venues.forEach(venue => {
-                    const option = new Option(venue.name, venue.id);
-                    discountVenueSelect.add(option);
-                });
-                discountVenueSelect.disabled = false;
-                discountVenueSelect.classList.remove('bg-gray-200');
-            } else {
-                discountVenueSelect.innerHTML = '<option value="">No venues for this partner</option>';
-            }
-        }
-    });
 
-    partnerForm.addEventListener('submit', async function (event) {
-        event.preventDefault();
-        showMessage(partnerFormMessage, 'Creating partner...', 'info');
-
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-            const response = await fetch('/partners', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: data.name,
-                    fiscalId: data.fiscalId,
-                    username: data.username,
-                    password: data.password,
-                })
-            });
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-                showMessage(partnerFormMessage, result.message || 'Partner created successfully!', 'success');
-                this.reset();
-                fetchPartners();
-            } else {
-                throw new Error(result.message || 'Failed to create partner.');
-            }
-        } catch (error) {
-            showMessage(partnerFormMessage, `Error: ${error.message}`, 'error');
-        }
-    });
 
     venueForm.addEventListener('submit', async function (event) {
         event.preventDefault();
-        showMessage(venueFormMessage, 'Creating venue...', 'info');
-        const authToken = localStorage.getItem('authPartnerToken');
+        const authToken = localStorage.getItem('token');
 
         if (!authToken) {
             showMessage(venueFormMessage, 'You must be logged in as a partner to create a venue.', 'error');

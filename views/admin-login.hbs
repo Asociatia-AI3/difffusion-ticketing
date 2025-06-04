@@ -1,0 +1,58 @@
+{{#> main}}
+{{#*inline "content"}}
+<div class="flex justify-center items-start min-h-screen pt-8 sm:pt-12">
+    <div class="w-full max-w-lg bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center text-gray-700 mb-6 sm:mb-8">{{message}}</h1>
+
+
+
+        <div id="step3LoginForm" style="">
+            <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">
+                Partner Login (<span id="selectedPartnerName" class="text-green-600"></span>
+                <span id="selectedVenueNameSpanContainer" style="display:none;"> / <span id="selectedVenueName"
+                        class="text-green-600"></span></span>)
+            </h2>
+            <form action="/partners/authenticate" method="POST" id="partnerLoginForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-m   edium text-gray-600 mb-1">Username</label>
+                    <input type="text" id="username" name="username" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm
+                          focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-600 mb-1">Password</label>
+                    <input type="password" id="password" name="password" required class="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md shadow-sm
+                          focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                </div>
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm
+                         text-base font-medium text-white bg-green-600 hover:bg-green-700
+                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    Login
+                </button>
+            </form>
+        </div>
+
+        <div id="partnerLoginResult" class="mt-8 p-4 text-center" style="display: none;">
+            <p class="text-lg text-green-700"></p>
+            <button id="scanQrButton"
+                class="mt-4 py-2 px-5 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+                style="display:none;">
+                go to QR Scan Page
+            </button>
+        </div>
+        <div id="partnerErrorMessage" class="mt-6 p-4 bg-red-50 border border-red-300 text-red-700 rounded-md"
+            style="display: none;"></div>
+        <p class="mt-8 text-center text-sm">
+            <a href="/" class="font-medium text-blue-600 hover:text-blue-500">Home</a>
+        </p>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const token = localStorage.getItem('token');
+        if (token) {
+            window.location.href = '/admin-setup';
+        }
+    });
+</script>
+{{/inline}}
+{{/main}}
