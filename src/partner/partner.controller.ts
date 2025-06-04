@@ -112,62 +112,23 @@ export class PartnerController {
   async authenticate(
     @Body()
     data: {
-      partnerId: string;
-      venueId: string;
       username: string;
       password: string;
     },
   ) {
-    const token = btoa(data.username + ':' + data.password);
-    console.log('Token:', token);
-    console.log('Data:', data);
-    const partner = await this.partnerService.findById(data.partnerId);
-    console.log('Partner:', partner);
-    if (!partner) {
-      throw new Error('Partner not found');
-    }
-    const filePath = path.join(__dirname, '../../../partners.json');
-    let partnersList: Array<{
-      partnerId: string;
-      name: string;
-      fiscalId: string;
-      hashedPassword: string;
-    }> = [];
-    try {
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      partnersList = JSON.parse(fileContent) as Array<{
-        partnerId: string;
-        name: string;
-        fiscalId: string;
-        hashedPassword: string;
-      }>;
-      console.log('partners.json read successfully.');
-    } catch (err) {
-      if (err.code === 'ENOENT') {
-        console.warn(`partners.json file not found: ${filePath}`);
-        throw new NotFoundException(
-          'Authentication failed: Partner data source not found.',
-        );
-      }
-      console.error('Error reading partners.json:', err);
+    const envUsername = process.env.PARTNER_USERNAME;
+    const envPassword = process.env.PARTNER_PASSWORD;
+    if (!envUsername || !envPassword) {
       throw new InternalServerErrorException(
-        'Error reading partner data during authentication.',
+        'Environment variables for partner authentication are not set.',
       );
     }
-
-    const partnerFromFile = partnersList.find(
-      (p) => p.partnerId === data.partnerId,
-    );
-
-    if (!partnerFromFile) {
-      throw new NotFoundException('Partner not found');
+   if (envUsername !== data.username || envPassword !== data.password) {
+      throw new NotFoundException('Invalid credentials');
     }
 
-    const isPasswordValid = partnerFromFile.hashedPassword === token;
-    if (!isPasswordValid) {
-      throw new NotFoundException('Invalid password');
-    }
-
-    return { partner: partner, token: token };
+    const token = btoa(data.username + ':' + data.password);
+    localStorage.setItem('token', token);
+    return { token: token };
   }
 }

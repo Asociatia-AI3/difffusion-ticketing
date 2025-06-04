@@ -44,52 +44,21 @@ export class DiscountController {
   ) {
     console.log('Creating discount with data:', data);
     const token = authHeader.split(' ')[1];
-    const filePath = path.join(__dirname, '../../../partners.json');
-    let partnersList: Array<{
-      partnerId: string;
-      name: string;
-      fiscalId: string;
-      hashedPassword: string;
-    }> = [];
-    const fileContent = await fs.readFile(filePath, 'utf-8');
-    try {
-      partnersList = JSON.parse(fileContent) as Array<{
-        partnerId: string;
-        name: string;
-        fiscalId: string;
-        hashedPassword: string;
-      }>;
-      console.log('partners.json successfully read.');
-    } catch (err) {
-      if (err.code === 'ENOENT') {
-        console.warn(`partners.json file not found: ${filePath}`);
-        throw new NotFoundException(
-          'Authentication failed: Partner data source not found.',
-        );
-      }
-      console.error('Error reading partners.json:', err);
+    const userNamePlusPassword = atob(token);
+    const userName = userNamePlusPassword.split(':')[0];
+    const password = userNamePlusPassword.split(':')[1];
+    const envUsername = process.env.PARTNER_USERNAME;
+    const envPassword = process.env.PARTNER_PASSWORD;
+    if (!envUsername || !envPassword) {
       throw new InternalServerErrorException(
-        'Error reading partner data during authentication.',
+        'Environment variables for partner authentication are not set.',
       );
     }
-    const partner = partnersList.find(
-      (p) => p.hashedPassword === token && p.partnerId === data.partnerId,
-    );
-    if (!partner) {
-      throw new NotFoundException('Invalid token');
+    if (envUsername !== userName || envPassword !== password) {
+      throw new NotFoundException('Invalid credentials');
     }
-    const getVenue = await this.venueService.findById(data.venueId);
-    const discount = await this.discountService.create({
-      name: data.name,
-      percentOff: data.percentOff,
-      maxUses: data.maxUses,
-      venue: getVenue!,
-    });
-    console.log('Discount created:', data);
-
-    if (!discount) {
-      throw new NotFoundException('Discount not created');
-    }
+    
+   
     return {
       success: true,
       discount: discount,
